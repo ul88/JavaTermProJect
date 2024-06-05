@@ -20,6 +20,4 @@ public class MoneyList {
     public void setList(ArrayList<MoneyObject> list) {
         this.list = list;
     }
-
-
 }

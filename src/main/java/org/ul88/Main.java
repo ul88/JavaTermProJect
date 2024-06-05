@@ -1,6 +1,6 @@
 package org.ul88;
 
-import org.ul88.gui.frame;
+import org.ul88.gui.MainFrame;
 import org.ul88.object.BeverageList;
 import org.ul88.object.BeverageObject;
 import org.ul88.object.MoneyList;
@@ -11,9 +11,7 @@ public class Main {
         BeverageList beverageList = new BeverageList();
         MoneyList moneyList = new MoneyList();
 
-        beverageList.translation(1);
-
-        new frame(beverageList, moneyList);
+        new MainFrame(beverageList, moneyList);
 
         for(BeverageObject iter : beverageList.getList()){
             System.out.println(iter.getName()+" "+iter.getRemaining()+" "+iter.getPrice());

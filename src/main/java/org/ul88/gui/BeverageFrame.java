@@ -1,37 +1,37 @@
 package org.ul88.gui;
 
-import org.ul88.Buy;
 import org.ul88.error.ErrorCode;
 import org.ul88.object.BeverageList;
 import org.ul88.object.MoneyList;
 import org.ul88.object.UserObject;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class BeverageFrame extends JFrame{
-    private final Buy buy = new Buy();
-
     public BeverageFrame(JPanel jPanel, BeverageList beverageList, MoneyList moneyList,
                          UserObject userObject, JLabel nowMoneyLabel) {
         ArrayList<JButton> buttonList = new ArrayList<>();
 
-        int startX = 130, startY = 40;
+        ArrayList<ImageIcon> imageList = init();
+
+        int startX = 167, startY = 188;
         int x = startX, y = startY;
         for(int i=0;i<beverageList.getList().size();i++){
             String now = beverageList.getList().get(i).getName();
             buttonList.add(new JButton(now));
-            buttonList.get(i).setBounds(x, y,150,40);
-
+            buttonList.get(i).setBounds(x, y,30,20);
+            buttonList.get(i).setBackground(Color.BLACK);
             ActionListener actionListener = (ActionEvent e) ->{
                 if(e.getActionCommand().equals(now)){
                     userObject.setBeverage(now);
                     System.out.println(now);
 
                     System.out.println("구매 시작");
-                    ErrorCode errorCode = buy.buyDrink(beverageList,userObject);
+                    ErrorCode errorCode = userObject.buyDrink(beverageList,moneyList);
 
                     if(errorCode == ErrorCode.SUCCESS){
                         JOptionPane.showMessageDialog(null, now+" 구매에 성공했습니다.");
@@ -45,17 +45,61 @@ public class BeverageFrame extends JFrame{
                         System.out.println("ERROR 오류 발생 : 잘못된 음료 이름을 가지고 있습니다.");
                     }
 
-                    nowMoneyLabel.setText(userObject.getMoney()+"원 투입되어있습니다.");
-                    jPanel.add(nowMoneyLabel);
+                    nowMoneyLabel.setText(userObject.getMoney()+"원");
                 }
             };
             buttonList.get(i).addActionListener(actionListener);
-            x+=180;
-            if(i%3 == 2){
+            x+=47;
+            if(i%6 == 5){
                 x=startX;
-                y+=50;
+                y+=84;
             }
             jPanel.add(buttonList.get(i));
         }
+
+        startX = 160;
+        startY = 133;
+        x = startX;
+        y = startY;
+        for(int i=0;i<imageList.size();i++){
+            JLabel label = new JLabel(imageList.get(i));
+            label.setBounds(x,y,50,50);
+            x+=45;
+            if(i%6 == 5){
+                x=startX;
+                y+=84;
+            }
+            jPanel.add(label);
+        }
+    }
+
+    public ArrayList<ImageIcon> init(){
+        ArrayList<ImageIcon> imageList = new ArrayList<>();
+
+        int width = 60, height = 50;
+        Image tempImg = new ImageIcon("src/images/물.png").getImage();
+        tempImg = tempImg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        imageList.add(new ImageIcon(tempImg));
+
+        tempImg = new ImageIcon("src/images/레쓰비.png").getImage();
+        tempImg = tempImg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        imageList.add(new ImageIcon(tempImg));
+
+        tempImg = new ImageIcon("src/images/포카리.png").getImage();
+        tempImg = tempImg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        imageList.add(new ImageIcon(tempImg));
+
+        tempImg = new ImageIcon("src/images/스타벅스.png").getImage();
+        tempImg = tempImg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        imageList.add(new ImageIcon(tempImg));
+
+        tempImg = new ImageIcon("src/images/코카콜라.png").getImage();
+        tempImg = tempImg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        imageList.add(new ImageIcon(tempImg));
+
+        tempImg = new ImageIcon("src/images/박카스.png").getImage();
+        tempImg = tempImg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        imageList.add(new ImageIcon(tempImg));
+        return imageList;
     }
 }
