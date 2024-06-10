@@ -2,6 +2,7 @@ package org.ul88.gui;
 
 import org.ul88.error.ErrorCode;
 import org.ul88.object.BeverageList;
+import org.ul88.object.BeverageObject;
 import org.ul88.object.MoneyList;
 import org.ul88.object.UserObject;
 
@@ -16,7 +17,7 @@ public class BeverageFrame extends JFrame{
                          UserObject userObject, JLabel nowMoneyLabel) {
         ArrayList<JButton> buttonList = new ArrayList<>();
 
-        ArrayList<ImageIcon> imageList = init();
+        ArrayList<ImageIcon> imageList = init(beverageList);
 
         int startX = 167, startY = 188;
         int x = startX, y = startY;
@@ -26,7 +27,11 @@ public class BeverageFrame extends JFrame{
             buttonList.get(i).setBounds(x, y,30,20);
             buttonList.get(i).setBackground(Color.BLACK);
             ActionListener actionListener = (ActionEvent e) ->{
-                if(e.getActionCommand().equals(now)){
+                if(now.equals("empty")){
+                    JOptionPane.showMessageDialog(null,"상품이 등록되지 않은 칸입니다.\n" +
+                            "다른 상품을 선택해주세요.");
+                }
+                else if(e.getActionCommand().equals(now)){
                     userObject.setBeverage(now);
                     System.out.println(now);
 
@@ -61,10 +66,19 @@ public class BeverageFrame extends JFrame{
         startY = 133;
         x = startX;
         y = startY;
+        ToolTipManager m = ToolTipManager.sharedInstance();
+        m.setInitialDelay(0);
+        m.setDismissDelay(1000);
         for(int i=0;i<imageList.size();i++){
             JLabel label = new JLabel(imageList.get(i));
+            if(beverageList.getList().get(i).getName().equals("empty")){
+                label.setToolTipText("상품이 등록되지 않은 칸입니다.");
+            }else{
+                label.setToolTipText(beverageList.getList().get(i).getName()+" "+
+                        beverageList.getList().get(i).getPrice()+"원");
+            }
             label.setBounds(x,y,50,50);
-            x+=45;
+            x+=46;
             if(i%6 == 5){
                 x=startX;
                 y+=84;
@@ -73,33 +87,17 @@ public class BeverageFrame extends JFrame{
         }
     }
 
-    public ArrayList<ImageIcon> init(){
+    public ArrayList<ImageIcon> init(BeverageList beverageList){
         ArrayList<ImageIcon> imageList = new ArrayList<>();
+        //음료의 이름과 이미지의 이름을 맞춰주세요.
+        for(int i=0;i<beverageList.getList().size();i++){
+            int width = 60, height = 50;
+            BeverageObject beverageObject = beverageList.getList().get(i);
+            Image img = new ImageIcon("src/images/"+beverageObject.getName()+".png").getImage();
+            img = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            imageList.add(new ImageIcon(img));
+        }
 
-        int width = 60, height = 50;
-        Image tempImg = new ImageIcon("src/images/물.png").getImage();
-        tempImg = tempImg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-        imageList.add(new ImageIcon(tempImg));
-
-        tempImg = new ImageIcon("src/images/레쓰비.png").getImage();
-        tempImg = tempImg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-        imageList.add(new ImageIcon(tempImg));
-
-        tempImg = new ImageIcon("src/images/포카리.png").getImage();
-        tempImg = tempImg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-        imageList.add(new ImageIcon(tempImg));
-
-        tempImg = new ImageIcon("src/images/스타벅스.png").getImage();
-        tempImg = tempImg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-        imageList.add(new ImageIcon(tempImg));
-
-        tempImg = new ImageIcon("src/images/코카콜라.png").getImage();
-        tempImg = tempImg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-        imageList.add(new ImageIcon(tempImg));
-
-        tempImg = new ImageIcon("src/images/박카스.png").getImage();
-        tempImg = tempImg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-        imageList.add(new ImageIcon(tempImg));
         return imageList;
     }
 }

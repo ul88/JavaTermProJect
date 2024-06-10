@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class BeverageList {
     private ArrayList<BeverageObject> list = new ArrayList<>();
@@ -26,6 +25,7 @@ public class BeverageList {
             }
             file.close();
         } catch (IOException ex) {
+            System.out.println("파일을 불러올 수 없습니다.");
             throw new RuntimeException(ex);
         }
     }

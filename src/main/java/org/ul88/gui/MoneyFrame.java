@@ -21,11 +21,11 @@ public class MoneyFrame extends JFrame{
         for(int i=0;i<moneyList.getList().size();i++){
             int nowInt = moneyList.getList().get(i).getAmount();
             String now = Integer.toString(nowInt);
-            buttonList.add(new JButton(now));
+            buttonList.add(new JButton(now+"원"));
             buttonList.get(i).setBounds(x, y,80,40);
 
             ActionListener actionListener = (ActionEvent e) ->{
-                if(e.getActionCommand() == now){
+                if(e.getActionCommand().equals(now+"원")){
                     ErrorCode errorCode = userObject.insertMoney(moneyList,nowInt);
                     if(errorCode == ErrorCode.SUCCESS){
                         nowMoneyLabel.setText(userObject.getMoney()+"원");

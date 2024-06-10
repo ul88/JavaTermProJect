@@ -4,6 +4,7 @@ import org.ul88.object.BeverageList;
 import org.ul88.object.MoneyList;
 import org.ul88.object.MoneyObject;
 import org.ul88.object.UserObject;
+import org.ul88.repository.Repository;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,11 +14,14 @@ import java.util.ArrayList;
 
 public class MainFrame extends JFrame
 {
-    private UserObject userObject = new UserObject("", 0, 0);
+    private UserObject userObject = new UserObject("", 0);
     private JLabel nowMoneyLabel;
 
-    public MainFrame(BeverageList beverageList, MoneyList moneyList) {
+    public MainFrame() {
+
         super("자판기 프로그램");
+        BeverageList beverageList = new BeverageList();
+        MoneyList moneyList = new MoneyList();
 
         setSize(600,800);
         setLocation(500, 100);
@@ -81,6 +85,7 @@ public class MainFrame extends JFrame
 
         ActionListener actionListener = (ActionEvent e) ->{
             if(e.getActionCommand().equals("관리자 모드")){
+                dispose();
                 new LoginFrame();
             }
         };

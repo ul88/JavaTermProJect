@@ -4,12 +4,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class AdminFrame extends JFrame {
     public AdminFrame(){
         super("관리자 모드");
 
-        setSize(300,270);
+        setSize(300,230);
         setLocation(300, 100);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
@@ -25,11 +27,9 @@ public class AdminFrame extends JFrame {
                 dispose();
                 new MoneyCountCheckFrame();
             }
-            else if(e.getActionCommand().equals("음료 변경")){
+            else if(e.getActionCommand().equals("음료 관리")){
                 dispose();
-            }
-            else if(e.getActionCommand().equals("수금")){
-                dispose();
+                new BeverageManagementFrame();
             }
             else if(e.getActionCommand().equals("비밀번호 변경")){
                 dispose();
@@ -47,24 +47,26 @@ public class AdminFrame extends JFrame {
         moneyCountCheckButton.addActionListener(actionListener);
         jPanel.add(moneyCountCheckButton);
 
-        JButton beverageChangeButton = new JButton("음료 변경");
+        JButton beverageChangeButton = new JButton("음료 관리");
         beverageChangeButton.setPreferredSize(new Dimension(200,40));
         beverageChangeButton.addActionListener(actionListener);
         jPanel.add(beverageChangeButton);
-
-        JButton collectButton = new JButton("수금");
-        collectButton.setPreferredSize(new Dimension(200,40));
-        collectButton.addActionListener(actionListener);
-        jPanel.add(collectButton);
 
         JButton changePwButton = new JButton("비밀번호 변경");
         changePwButton.setPreferredSize(new Dimension(200,40));
         changePwButton.addActionListener(actionListener);
         jPanel.add(changePwButton);
 
-
         add(jPanel);
 
         setVisible(true);
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                new MainFrame();
+            }
+        });
     }
 }

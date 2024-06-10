@@ -3,18 +3,22 @@ package org.ul88.object;
 import org.ul88.error.ErrorCode;
 import org.ul88.repository.Repository;
 
+import java.io.*;
 import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 public class UserObject {
     private String beverage;
     private int money;
-    private int moneyCount;
+    private int moneyCount; //지폐 개수
 
-    public UserObject(String beverage, int money, int moneyCount) {
+    public UserObject(String beverage, int money) {
         this.beverage = beverage;
         this.money = money;
-        this.moneyCount = moneyCount;
+        moneyCount = 0;
     }
 
     public String getBeverage() {
@@ -33,29 +37,20 @@ public class UserObject {
         this.money = money;
     }
 
-    public int getMoneyCount() {
-        return moneyCount;
-    }
-
-    public void setMoneyCount(int moneyCount) {
-        this.moneyCount = moneyCount;
-    }
-
+    //자판기에 금액을 투입하는 메소드
     public ErrorCode insertMoney(MoneyList moneyList,int inputMoney){
-        if(inputMoney == 1000){
-            moneyCount++;
-        }
-        if(moneyCount > 5){
-            moneyCount--;
+
+        if(inputMoney == 1000 && moneyCount == 5){
             return ErrorCode.FAIL_MANY_PAPER;
         }
+        if(money + inputMoney > 7000){
+            return ErrorCode.FAIL_MAX_MONEY;
+        }
+
+        if(inputMoney == 1000) moneyCount++;
 
         money += inputMoney;
 
-        if(money > 7000){
-            money -= inputMoney;
-            return ErrorCode.FAIL_MAX_MONEY;
-        }
         for(int i=0;i<moneyList.getList().size();i++){
             if(moneyList.getList().get(i).getAmount() == inputMoney){
                 moneyList.getList().get(i).setRemaining(
@@ -64,6 +59,8 @@ public class UserObject {
                 break;
             }
         }
+
+        new Repository(moneyList);
         return ErrorCode.SUCCESS;
     }
 
@@ -79,8 +76,18 @@ public class UserObject {
 
                 money = money - beverageObject.getPrice();
                 if(moneyCount != 0) moneyCount--;
+                //날짜 기록
+                Date nowDate = new Date();
+                RevenueObject revenueObject = new RevenueObject(
+                        new SimpleDateFormat("yyyy-MM-dd").format(nowDate),
+                        new SimpleDateFormat("HH:mm:ss").format(nowDate),
+                        new SimpleDateFormat("a").format(nowDate),
+                        beverageObject.getName(),
+                        beverageObject.getPrice()
+                );
 
                 new Repository(beverageList,moneyList);
+                new Repository(revenueObject);
                 return ErrorCode.SUCCESS;
             }
         }
@@ -91,11 +98,22 @@ public class UserObject {
     //돈을 반환하는 메소드
     public ArrayList<MoneyObject> returnMoney(MoneyList moneyList){
         ArrayList<MoneyObject> moneyCnt = new ArrayList<>();
-        for(int i=moneyList.getList().size()-1;i>=0;i--) {
-            moneyCnt.add(new MoneyObject(moneyList.getList().get(i).getAmount(), money / moneyList.getList().get(i).getAmount()));
-            money %= moneyList.getList().get(i).getAmount();
+
+        int money = this.money;
+        for(int i=moneyList.getList().size()-1;i>=0;i--){
+            MoneyObject moneyObject = moneyList.getList().get(i);
+            moneyCnt.add(new MoneyObject(moneyObject.getAmount(),
+                    money/moneyObject.getAmount())
+            );
+            moneyList.getList().get(i).setRemaining(
+                    moneyObject.getRemaining() - money/moneyObject.getAmount()
+            );
+            money %= moneyObject.getAmount();
         }
+        this.money = 0;
         moneyCount = 0;
+        //data파일에 갱신
+        new Repository(moneyList);
         return moneyCnt;
     }
 }
