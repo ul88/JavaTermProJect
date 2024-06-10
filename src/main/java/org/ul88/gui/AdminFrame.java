@@ -11,7 +11,7 @@ public class AdminFrame extends JFrame {
     public AdminFrame(){
         super("관리자 모드");
 
-        setSize(300,230);
+        setSize(300,280);
         setLocation(300, 100);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
@@ -35,12 +35,21 @@ public class AdminFrame extends JFrame {
                 dispose();
                 new ChangePasswordFrame();
             }
+            else if(e.getActionCommand().equals("재고 없음 확인")){
+                dispose();
+                new StockShowFrame();
+            }
         };
 
         JButton salesButton = new JButton("매출 확인");
         salesButton.setPreferredSize(new Dimension(200,40));
         salesButton.addActionListener(actionListener);
         jPanel.add(salesButton);
+
+        JButton stockButton = new JButton("재고 없음 확인");
+        stockButton.setPreferredSize(new Dimension(200,40));
+        stockButton.addActionListener(actionListener);
+        jPanel.add(stockButton);
 
         JButton moneyCountCheckButton = new JButton("화폐 현황");
         moneyCountCheckButton.setPreferredSize(new Dimension(200,40));

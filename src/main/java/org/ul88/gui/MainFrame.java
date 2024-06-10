@@ -16,6 +16,7 @@ public class MainFrame extends JFrame
 {
     private UserObject userObject = new UserObject("", 0);
     private JLabel nowMoneyLabel;
+    private ArrayList<JButton> beverageButtonList = new ArrayList<>();
 
     public MainFrame() {
 
@@ -45,8 +46,8 @@ public class MainFrame extends JFrame
         nowMoneyLabel.setForeground(Color.RED);
         nowMoneyLabel.setFont(nowMoneyLabel.getFont().deriveFont(14.0f));
 
-        new BeverageFrame(jPanel,beverageList, moneyList,userObject,nowMoneyLabel);
-        new MoneyFrame(jPanel,moneyList,userObject,nowMoneyLabel);
+        new BeverageFrame(jPanel,beverageList, moneyList,userObject,nowMoneyLabel,beverageButtonList);
+        new MoneyFrame(jPanel,beverageList,moneyList,userObject,nowMoneyLabel,beverageButtonList);
         makeReturnButton(jPanel,beverageList,moneyList);
         makeAdminButton(jPanel);
 
@@ -64,6 +65,7 @@ public class MainFrame extends JFrame
         ActionListener actionListener = (ActionEvent e) ->{
             if(e.getActionCommand().equals("반환")){
                 ArrayList<MoneyObject> returnMoneyList = userObject.returnMoney(moneyList);
+                if(returnMoneyList.isEmpty()) return;
                 String message = "";
                 for(int i=0;i<returnMoneyList.size();i++){
                     message += Integer.toString(returnMoneyList.get(i).getAmount())+"원을 ";
@@ -72,6 +74,13 @@ public class MainFrame extends JFrame
                 }
                 JOptionPane.showMessageDialog(null,message);
                 nowMoneyLabel.setText(userObject.getMoney()+"원");
+
+                for(int i=0;i<beverageButtonList.size();i++){
+                    if(beverageList.getList().get(i).getRemaining() == 0){
+                        beverageButtonList.get(i).setBackground(Color.GRAY);
+                    }
+                    else beverageButtonList.get(i).setBackground(Color.RED);
+                }
             }
         };
 

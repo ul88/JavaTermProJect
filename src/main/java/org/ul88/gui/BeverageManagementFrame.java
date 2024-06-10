@@ -1,12 +1,15 @@
 package org.ul88.gui;
 
 import org.ul88.object.BeverageList;
+import org.ul88.object.StockObject;
 import org.ul88.repository.Repository;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class BeverageManagementFrame extends JFrame {
     public BeverageManagementFrame(){
@@ -71,10 +74,39 @@ public class BeverageManagementFrame extends JFrame {
                         if(nameField.getText().contains(" ")) {
                             JOptionPane.showMessageDialog(null, "이름에 공백이 있어 변경되지 않습니다.");
                         }else{
-                            beverageList.getList().get(Integer.parseInt(idxLabel.getText().substring(0, 1)) - 1).setName(nameField.getText());
-                            beverageList.getList().get(Integer.parseInt(idxLabel.getText().substring(0, 1)) - 1).setPrice(Integer.parseInt(priceField.getText()));
-                            beverageList.getList().get(Integer.parseInt(idxLabel.getText().substring(0, 1)) - 1).setRemaining(Integer.parseInt(remainingField.getText()));
-                            JOptionPane.showMessageDialog(null, "변경되었습니다.");
+                            if(Integer.parseInt(priceField.getText()) < 0 || Integer.parseInt(remainingField.getText()) < 0 ){
+                                JOptionPane.showMessageDialog(null,"가격 또는 재고에 음수가 입력되어 변경되지 않습니다.");
+                            }
+                            else{
+                                beverageList.getList().get(Integer.parseInt(idxLabel.getText().substring(0, 1)) - 1).setName(nameField.getText());
+                                beverageList.getList().get(Integer.parseInt(idxLabel.getText().substring(0, 1)) - 1).setPrice(Integer.parseInt(priceField.getText()));
+                                if(beverageList.getList().get(Integer.parseInt(idxLabel.getText().substring(0, 1)) - 1).getRemaining() != Integer.parseInt(remainingField.getText())){
+                                    int temp = beverageList.getList().get(Integer.parseInt(idxLabel.getText().substring(0, 1)) - 1).getRemaining() - Integer.parseInt(remainingField.getText());
+                                    StockObject stockObject;
+                                    if(temp < 0) {
+                                        Date nowDate = new Date();
+                                        stockObject = new StockObject(
+                                                new SimpleDateFormat("yyyy-MM-dd").format(nowDate),
+                                                new SimpleDateFormat("HH:mm:ss").format(nowDate),
+                                                new SimpleDateFormat("a").format(nowDate),
+                                                beverageList.getList().get(Integer.parseInt(idxLabel.getText().substring(0, 1)) - 1).getName(),
+                                                Integer.toString(Math.abs(temp))+"개 추가"
+                                        );
+                                    }else{
+                                        Date nowDate = new Date();
+                                        stockObject = new StockObject(
+                                                new SimpleDateFormat("yyyy-MM-dd").format(nowDate),
+                                                new SimpleDateFormat("HH:mm:ss").format(nowDate),
+                                                new SimpleDateFormat("a").format(nowDate),
+                                                beverageList.getList().get(Integer.parseInt(idxLabel.getText().substring(0, 1)) - 1).getName(),
+                                                Integer.toString(Math.abs(temp))+"개 감소"
+                                        );
+                                    }
+                                    new Repository(stockObject);
+                                }
+                                beverageList.getList().get(Integer.parseInt(idxLabel.getText().substring(0, 1)) - 1).setRemaining(Integer.parseInt(remainingField.getText()));
+                                JOptionPane.showMessageDialog(null, "변경되었습니다.");
+                            }
                         }
                     }
                     new Repository(beverageList);

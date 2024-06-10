@@ -3,6 +3,7 @@ package org.ul88.object;
 import org.ul88.error.ErrorCode;
 import org.ul88.repository.Repository;
 
+import javax.swing.*;
 import java.io.*;
 import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
@@ -86,6 +87,16 @@ public class UserObject {
                         beverageObject.getPrice()
                 );
 
+                if(beverageObject.getRemaining() == 0) {
+                    StockObject stockObject = new StockObject(
+                            new SimpleDateFormat("yyyy-MM-dd").format(nowDate),
+                            new SimpleDateFormat("HH:mm:ss").format(nowDate),
+                            new SimpleDateFormat("a").format(nowDate),
+                            beverageObject.getName(),
+                            "품절"
+                    );
+                    new Repository(stockObject);
+                }
                 new Repository(beverageList,moneyList);
                 new Repository(revenueObject);
                 return ErrorCode.SUCCESS;
@@ -105,10 +116,18 @@ public class UserObject {
             moneyCnt.add(new MoneyObject(moneyObject.getAmount(),
                     money/moneyObject.getAmount())
             );
+            if(moneyObject.getRemaining() - money/moneyObject.getAmount() < 0){
+                continue;
+            }
             moneyList.getList().get(i).setRemaining(
                     moneyObject.getRemaining() - money/moneyObject.getAmount()
             );
             money %= moneyObject.getAmount();
+        }
+        if(money != 0){
+            JOptionPane.showMessageDialog(null,"거스름 돈이 부족하여 반환이 불가능합니다.\n" +
+                    "관리자에게 문의해주세요.");
+            return new ArrayList<MoneyObject>();
         }
         this.money = 0;
         moneyCount = 0;

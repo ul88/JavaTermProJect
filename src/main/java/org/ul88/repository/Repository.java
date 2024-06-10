@@ -108,4 +108,22 @@ public class Repository {
             throw new RuntimeException(ex);
         }
     }
+
+    public Repository(StockObject stockObject) {
+        //stockData.txt 갱신
+        try{
+            BufferedWriter file = new BufferedWriter(new FileWriter(
+                    new File("src/main/resources/TextFile","stockData.txt"),true
+            ));
+
+            file.write(stockObject.getDate()+" "+
+                    stockObject.getTime()+" "+stockObject.getAM_PM()+" "
+                    +stockObject.getBeverage()+" "+stockObject.getStock()+"\n");
+
+            file.close();
+        }catch (IOException ex){
+            System.out.println("파일을 불러올 수 없습니다.");
+            throw new RuntimeException(ex);
+        }
+    }
 }

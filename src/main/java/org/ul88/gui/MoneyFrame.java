@@ -1,17 +1,20 @@
 package org.ul88.gui;
 
 import org.ul88.error.ErrorCode;
+import org.ul88.object.BeverageList;
 import org.ul88.object.MoneyList;
 import org.ul88.object.UserObject;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class MoneyFrame extends JFrame{
-    public MoneyFrame(JPanel jPanel, MoneyList moneyList, UserObject userObject,
-                      JLabel nowMoneyLabel){
+    public MoneyFrame(JPanel jPanel, BeverageList beverageList,
+                      MoneyList moneyList, UserObject userObject,
+                      JLabel nowMoneyLabel, ArrayList<JButton> beverageButtonList){
         ArrayList<JButton> buttonList = new ArrayList<>();
 
         jPanel.add(nowMoneyLabel);
@@ -29,6 +32,20 @@ public class MoneyFrame extends JFrame{
                     ErrorCode errorCode = userObject.insertMoney(moneyList,nowInt);
                     if(errorCode == ErrorCode.SUCCESS){
                         nowMoneyLabel.setText(userObject.getMoney()+"원");
+
+                        for(int j=0;j<beverageList.getList().size();j++){
+                            if(beverageList.getList().get(j).getName().equals("empty")) continue;
+                            if(beverageList.getList().get(j).getRemaining() == 0){
+                                beverageButtonList.get(j).setBackground(Color.GRAY);
+                                continue;
+                            }
+                            if(beverageList.getList().get(j).getPrice() <= userObject.getMoney()){
+                                beverageButtonList.get(j).setBackground(Color.GREEN);
+                            }else{
+                                beverageButtonList.get(j).setBackground(Color.RED);
+                            }
+                        }
+
                         System.out.println(now+" "+userObject.getMoney());
                     }else{
                         if(errorCode == ErrorCode.FAIL_MAX_MONEY){
