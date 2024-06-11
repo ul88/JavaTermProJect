@@ -4,12 +4,9 @@ import org.ul88.error.ErrorCode;
 import org.ul88.repository.Repository;
 
 import javax.swing.*;
-import java.io.*;
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 
 public class UserObject {
     private String beverage;

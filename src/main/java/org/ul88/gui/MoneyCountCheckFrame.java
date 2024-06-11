@@ -1,7 +1,5 @@
 package org.ul88.gui;
 
-import org.ul88.object.BeverageList;
-import org.ul88.object.BeverageObject;
 import org.ul88.object.MoneyList;
 import org.ul88.object.MoneyObject;
 import org.ul88.repository.Repository;

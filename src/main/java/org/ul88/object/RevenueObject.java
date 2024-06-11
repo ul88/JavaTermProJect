@@ -1,8 +1,5 @@
 package org.ul88.object;
 
-import java.util.ArrayList;
-import java.util.Date;
-
 public class RevenueObject {
     private String date;
     private String time;
