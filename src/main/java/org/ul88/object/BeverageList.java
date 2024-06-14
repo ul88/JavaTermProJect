@@ -7,9 +7,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class BeverageList {
+    // 음료 리스트
     private ArrayList<BeverageObject> list = new ArrayList<>();
 
     public BeverageList() {
+        // 음료 리스트 파일을 읽어와서 리스트에 추가
         try {
             BufferedReader file = new BufferedReader(new FileReader(
                     new File("src/main/resources/TextFile","beverage.txt")

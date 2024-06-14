@@ -8,6 +8,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class AdminFrame extends JFrame {
+    // 관리자 모드 화면
     public AdminFrame(){
         super("관리자 모드");
 
@@ -18,6 +19,7 @@ public class AdminFrame extends JFrame {
         JPanel jPanel = new JPanel();
         jPanel.setLayout(new FlowLayout());
 
+        // 버튼 클릭 시 해당하는 화면으로 이동
         ActionListener actionListener = (ActionEvent e) ->{
             if(e.getActionCommand().equals("매출 확인")){
                 dispose();
@@ -41,6 +43,7 @@ public class AdminFrame extends JFrame {
             }
         };
 
+        // 버튼 생성 및 이벤트 추가
         JButton salesButton = new JButton("매출 확인");
         salesButton.setPreferredSize(new Dimension(200,40));
         salesButton.addActionListener(actionListener);

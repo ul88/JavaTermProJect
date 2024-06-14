@@ -21,6 +21,7 @@ public class MoneyFrame extends JFrame{
 
         int startX = 37, startY = 680;
         int x = startX, y = startY;
+        // for문을 이용하여 돈 버튼을 일정한 간격으로 추가한다.
         for(int i=0;i<moneyList.getList().size();i++){
             int nowInt = moneyList.getList().get(i).getAmount();
             String now = Integer.toString(nowInt);

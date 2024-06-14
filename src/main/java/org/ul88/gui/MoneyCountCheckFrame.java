@@ -23,23 +23,26 @@ public class MoneyCountCheckFrame extends JFrame {
 
         MoneyList moneyList = new MoneyList();
         int y = 0;
-        for(int i=0;i<moneyList.getList().size();i++){
+        // 화폐 현황을 보여주는 레이블
+        for(int i=0;i<moneyList.getList().size();i++) {
             MoneyObject moneyObject = moneyList.getList().get(i);
-            JLabel label = new JLabel(Integer.toString(moneyObject.getAmount())+"원     "+
-                    Integer.toString(moneyObject.getRemaining())+"개");
-            label.setFont(new Font("고딕",Font.PLAIN,20));
-            label.setBounds(0,y,300,30);
-            y+=40;
+            JLabel label = new JLabel(Integer.toString(moneyObject.getAmount()) + "원     " +
+                    Integer.toString(moneyObject.getRemaining()) + "개");
+            label.setFont(new Font("고딕", Font.PLAIN, 20));
+            label.setBounds(0, y, 300, 30);
+            y += 40;
             add(label);
         }
 
         JButton button = new JButton("수금");
         button.setBounds(0,y,300,30);
+        // 수금 버튼 클릭 시 이벤트
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(e.getActionCommand().equals("수금")){
                     int revenue = 0;
+                    // 수금한 금액을 계산
                     for(int i=0;i<moneyList.getList().size();i++){
                         revenue += (moneyList.getList().get(i).getRemaining() - 10)
                                 *moneyList.getList().get(i).getAmount();

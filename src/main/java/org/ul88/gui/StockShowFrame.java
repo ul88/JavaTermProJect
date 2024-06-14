@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 public class StockShowFrame extends JFrame{
+    // 재고 없음 확인 창
     public StockShowFrame(){
         super("매출 확인");
 
@@ -28,11 +29,13 @@ public class StockShowFrame extends JFrame{
 
         ArrayList<StockObject> stockList = new ArrayList<>();
 
+        // 최소, 최대 연도를 구하기 위한 변수
         int minYear = 9999, maxYear = 0;
         Vector<String> yearList = new Vector<>();
         String[] months = {"01","02","03","04","05","06","07","08","09","10","11","12"};
         String[] days = {"모든 날","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"};
 
+        // stockData.txt 파일을 읽어 stockList에 저장
         try {
             BufferedReader file = new BufferedReader(new FileReader(
                     new File("src/main/resources/TextFile","stockData.txt")
@@ -62,6 +65,7 @@ public class StockShowFrame extends JFrame{
             throw new RuntimeException(ex);
         }
 
+        // 검색 조건을 선택하는 콤보박스
         JComboBox<String> yearBox = new JComboBox<>(yearList);
         JComboBox<String> monthBox = new JComboBox<>(months);
         JComboBox<String> dayBox = new JComboBox<>(days);
@@ -73,6 +77,7 @@ public class StockShowFrame extends JFrame{
         JButton searchButton = new JButton("검색");
         jPanel.add(searchButton);
 
+        // 검색 결과를 보여주는 테이블
         JTable jTable = new JTable();
         DefaultTableModel model = new DefaultTableModel();
         jTable.setModel(model);
@@ -85,14 +90,17 @@ public class StockShowFrame extends JFrame{
         JScrollPane jScrollPane = new JScrollPane(jTable);
         jPanel.add(jScrollPane);
 
+        // 검색 버튼 클릭 시 이벤트
         searchButton.addActionListener(e -> {
             String year = (String) yearBox.getSelectedItem();
             String month = (String) monthBox.getSelectedItem();
             String day = (String) dayBox.getSelectedItem();
 
+            // 선택한 날짜에 해당하는 매출을 테이블에 출력
             if(day.equals("모든 날")){
                 model.setRowCount(0);
 
+                // 선택한 연도와 월에 해당하는 매출을 테이블에 출력
                 for(StockObject stockObject : stockList) {
                     if (year.equals(stockObject.year()) && (month.equals(stockObject.month()))) {
                         model.addRow(new Object[]{
@@ -104,9 +112,10 @@ public class StockShowFrame extends JFrame{
                         });
                     }
                 }
-            }else{
+            }else{ // 선택한 날짜에 해당하는 매출을 테이블에 출력
                 model.setRowCount(0);
 
+                // 선택한 연도, 월, 일에 해당하는 매출을 테이블에 출력
                 for(StockObject stockObject : stockList){
                     if(year.equals(stockObject.year()) && month.equals(stockObject.month()) && day.equals(stockObject.day())){
                         model.addRow(new Object[]{

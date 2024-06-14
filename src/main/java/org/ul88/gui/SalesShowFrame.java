@@ -28,11 +28,13 @@ public class SalesShowFrame extends JFrame {
 
         ArrayList<RevenueObject> revenueList = new ArrayList<>();
 
+        // 최소, 최대 연도를 구하기 위한 변수
         int minYear = 9999, maxYear = 0;
         Vector<String> yearList = new Vector<>();
         String[] months = {"01","02","03","04","05","06","07","08","09","10","11","12"};
         String[] days = {"모든 날","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"};
 
+        // revenueData.txt 파일을 읽어 revenueList에 저장
         try {
             BufferedReader file = new BufferedReader(new FileReader(
                     new File("src/main/resources/TextFile","revenueData.txt")
@@ -85,6 +87,7 @@ public class SalesShowFrame extends JFrame {
         JScrollPane jScrollPane = new JScrollPane(jTable);
         jPanel.add(jScrollPane);
 
+        // 검색 버튼을 누르면 해당하는 날짜의 매출을 테이블에 출력
         searchButton.addActionListener(e -> {
             String year = (String) yearBox.getSelectedItem();
             String month = (String) monthBox.getSelectedItem();

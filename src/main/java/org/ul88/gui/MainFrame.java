@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class MainFrame extends JFrame
 {
-    private UserObject userObject = new UserObject("", 0);
+    private UserObject userObject = new UserObject();
     private JLabel nowMoneyLabel;
     private ArrayList<JButton> beverageButtonList = new ArrayList<>();
 

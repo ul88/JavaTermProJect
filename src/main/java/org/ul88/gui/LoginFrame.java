@@ -25,6 +25,7 @@ public class LoginFrame extends JFrame {
         ActionListener actionListener = (ActionEvent e)->{
             if(e.getActionCommand().equals("로그인")){
                 String successPassWord = "";
+                //password.txt 파일에 접근해서 비밀번호를 가져와 successPassWord 변수에 저장
                 try {
                     BufferedReader file = new BufferedReader(new FileReader(
                             new File("src/main/resources/TextFile","password.txt")
@@ -36,8 +37,10 @@ public class LoginFrame extends JFrame {
                 }
 
                 String password = new String(pwField.getPassword());
+                //로그인 성공시
                 if(password.equals(successPassWord)){
                     JOptionPane.showMessageDialog(null,"로그인에 성공했습니다.");
+                    // 현재 프레임 삭제
                     dispose();
                     new AdminFrame();
                 }else{
